@@ -23,7 +23,7 @@ defmodule Scrivener.HTMLTest do
     end
 
     test "2 away from the first" do
-      assert pages(1..8) == links_with_opts total_pages: 10, page_number: 3
+      assert pages(1..10) == links_with_opts total_pages: 10, page_number: 3
     end
 
     test "1 away from the first" do
@@ -39,7 +39,7 @@ defmodule Scrivener.HTMLTest do
     end
 
     test "2 away from the last" do
-      assert pages(3..10) == links_with_opts total_pages: 10, page_number: 8
+      assert pages(1..10) == links_with_opts total_pages: 10, page_number: 8
     end
 
     test "1 away from the last" do
@@ -157,7 +157,7 @@ defmodule Scrivener.HTMLTest do
     end
 
     test "does not include ellipsis on first page" do
-      assert pages(1..6) == links_with_opts [total_pages: 8, page_number: 1], first: true, ellipsis: "&hellip;"
+      assert pages(1..8) == links_with_opts [total_pages: 8, page_number: 1], first: true, ellipsis: "&hellip;"
     end
 
     test "uses ellipsis only beyond <distance> of first page" do
@@ -293,49 +293,6 @@ defmodule Scrivener.HTMLTest do
                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "&gt;&gt;",
                          60, 47, "span", 62], 60, 47, "li", 62]], 60, 47, "ul", 62]} =
         HTML.pagination_links(build_conn(), %Page{entries: [], page_number: 1, page_size: 10, total_entries: 20, total_pages: 2}, view_style: :foundation)
-    end
-
-    test "renders Foundation for Sites 6.x styling with ellipsis" do
-      assert {:safe, [60, "ul",
-                       [[32, "class", 61, 34, "pagination", 34],
-                        [32, "role", 61, 34, "pagination", 34]], 62,
-                       [[60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "&lt;&lt;", 60, 47, "span",
-                          62], 60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "1", 60, 47, "span", 62],
-                         60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "2", 60, 47, "span", 62],
-                         60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "current", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "3", 60, 47, "span", 62],
-                         60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "4", 60, 47, "span", 62],
-                         60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "5", 60, 47, "span", 62],
-                         60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "6", 60, 47, "span", 62],
-                         60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "7", 60, 47, "span", 62],
-                         60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "8", 60, 47, "span", 62],
-                         60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "ellipsis", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "", 60, 47, "span",
-                          62], 60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "10", 60, 47, "span", 62],
-                         60, 47, "li", 62],
-                        [60, "li", [[32, "class", 61, 34, "", 34]], 62,
-                         [60, "span", [[32, "class", 61, 34, "", 34]], 62, "&gt;&gt;", 60, 47, "span",
-                          62], 60, 47, "li", 62]], 60, 47, "ul", 62]} ==
-        HTML.pagination_links(build_conn(), %Page{entries: [], page_number: 3, page_size: 10, total_entries: 100, total_pages: 10}, ellipsis: true, view_style: :foundation)
     end
 
     test "renders bootstrap v4 styling" do
