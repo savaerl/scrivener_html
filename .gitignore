@@ -5,3 +5,5 @@ erl_crash.dump
 *.ez
 doc/
 .tags*
+/.idea/
+scrivenerhtml.iml
