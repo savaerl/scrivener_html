@@ -345,6 +345,11 @@ defmodule Scrivener.HTML do
     page - (distance + (page - distance - 1))
   end
   # For medium to high end page numbers
+
+  defp beginning_distance(page, _total, distance) when page - distance  == 3  do
+    1
+  end
+
   defp beginning_distance(page, total, distance) when page <= total  do
     page - distance
   end
@@ -363,6 +368,10 @@ defmodule Scrivener.HTML do
     1
   end
   # For low to mid range page numbers (guard here to ensure crash if something goes wrong)
+  defp end_distance(page, total, distance) when page + distance == total - 2 do
+    total
+  end
+
   defp end_distance(page, total, distance) when page + distance < total do
     page + distance
   end
@@ -375,14 +384,23 @@ defmodule Scrivener.HTML do
     list
   end
 
+  defp add_first(page, distance, true) when page - distance == 3  do
+    []
+  end
+
   defp add_first(page, distance, true) when page - distance > 1 do
     [1]
   end
+
   defp add_first(page, distance, first) when page - distance > 1 and first != false do
     [:first]
   end
   defp add_first(_page, _distance, _included) do
     []
+  end
+
+  defp add_last(list, page, total, distance, true) when page + distance == total - 2 do
+    list
   end
 
   defp add_last(list, page, total, distance, true) when page + distance < total do
@@ -406,6 +424,10 @@ defmodule Scrivener.HTML do
     add_first_ellipsis(list, page,total, distance + 1, nil)
   end
 
+  defp add_first_ellipsis(list, page, _total, distance, _first) when page - distance == 2 do
+    list
+  end
+
   defp add_first_ellipsis(list, page, _total, distance, _first) when page - distance > 1 and page > 1 do
     list ++ [:first_ellipsis]
   end
@@ -415,6 +437,10 @@ defmodule Scrivener.HTML do
 
   defp add_last_ellipsis(list, page, total, distance, true) do
     add_last_ellipsis(list, page, total, distance + 1, nil)
+  end
+
+  defp add_last_ellipsis(list, page, total, distance, _) when page + distance == total - 1 do
+    list
   end
 
   defp add_last_ellipsis(list, page, total, distance, _) when page + distance < total and page != total do
